@@ -1,0 +1,200 @@
+/* Base (antes inline no topo do index.html) */
+:root{color-scheme:only light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}
+img{max-width:100%}
+[hidden]:not([hidden=until-found i]){display:none!important}
+
+:root {
+  --creme: #F9F7F2;
+  --papel: #FFFDF8;
+  --pinheiro: #1B3B2B;
+  --pinheiro2: #2A5240;
+  --ouro: #C5A059;
+  --ouro2: #D4AF37;
+  --vinho: #8C2224;
+  --tinta: #2B2A26;
+  --musgo: #5E6B5F;
+  --linha: #E6DFCF;
+}
+html { scroll-behavior: smooth; background-color: #F9F7F2 !important; }
+body {
+  background-color: #F9F7F2 !important;
+  color: var(--tinta);
+  font-family: Montserrat, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { text-wrap: balance; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* Divisor natalino: fio dourado + ramo */
+.divisor { display: flex; align-items: center; gap: 14px; color: var(--ouro); }
+.divisor::before, .divisor::after {
+  content: ""; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--ouro), transparent);
+}
+
+/* Card: sombra suave em duas camadas + elevação no hover */
+.card {
+  transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s ease, border-color .35s ease;
+  box-shadow: 0 1px 2px rgba(27,59,43,.05), 0 8px 24px -12px rgba(27,59,43,.18);
+  border: 1px solid var(--linha);
+  background: var(--papel);
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 2px 4px rgba(27,59,43,.06), 0 22px 40px -18px rgba(27,59,43,.35);
+  border-color: var(--ouro);
+}
+
+/* Moldura de imagem idêntica em todos os cards: quadrada, até 280px de altura,
+   foto inteira (contain) centralizada com 12px de respiro. Vale também para os slides do carrossel. */
+.card-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-height: 280px;
+  overflow: hidden;
+}
+.card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain !important;
+  object-position: center center;
+  display: block;
+  padding: 12px;
+  transition: transform .3s ease;
+}
+.card:hover .card-media img { transform: scale(1.03); }
+
+/* Swatches de cor: preenchimento sólido sempre preservado; seleção só por anel externo.
+   button.swatch vence o reset de <button> do Tailwind (fundo transparente). */
+button.swatch {
+  width: 26px; height: 26px; border-radius: 9999px;
+  background-color: var(--swatch) !important;
+  background-image: var(--swatch-img) !important; /* SVG da cor: imune ao modo escuro forçado */
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  border: 1px solid rgba(255, 255, 255, .2);
+  box-shadow: inset 0 0 0 1px rgba(27, 59, 43, .28); /* contorno visível para os tons claros sobre fundo claro */
+  cursor: pointer; transition: box-shadow .2s, transform .15s;
+}
+button.swatch[data-cor-nome="Branco"]         { background-color: #FFFFFF !important; }
+button.swatch[data-cor-nome="Prata"]          { background-color: #E5E8EC !important; }
+button.swatch[data-cor-nome="Creme"]          { background-color: #EFE5D5 !important; }
+button.swatch[data-cor-nome="Dourado"]        { background-color: #D4AF37 !important; }
+button.swatch[data-cor-nome="Vermelho"]       { background-color: #A82025 !important; }
+button.swatch[data-cor-nome="Verde Pinheiro"] { background-color: #1E4D34 !important; }
+button.swatch { position: relative; }
+button.swatch::after { content: ""; position: absolute; inset: -4px; border-radius: 9999px; }
+button.swatch:hover { transform: scale(1.08); }
+button.swatch.ativa { box-shadow: inset 0 0 0 1px rgba(27, 59, 43, .28), 0 0 0 2px #151F19, 0 0 0 4px #C5A059; }
+
+.btn-add { transition: background-color .2s, color .2s, transform .15s; }
+.btn-add:active { transform: scale(.97); }
+:focus-visible { outline: 2px solid var(--ouro); outline-offset: 3px; border-radius: 6px; }
+
+/* Carrossel de filtros sem barra de rolagem visível */
+/* Sem rolagem lateral no mobile. "clip" (e não "hidden") para não quebrar a barra de filtros sticky */
+html, body { overflow-x: clip; }
+/* Trava a rolagem do fundo com sacola ou pop-up abertos */
+html.sem-rolagem, html.sem-rolagem body { overflow: hidden; }
+/* Com a sacola flutuante visível, o rodapé ganha respiro para o botão não cobrir o CTA final */
+body.com-sacola .rodape { padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
+
+/* Área de toque ampliada sem mudar o visual (setas do carrossel: 36px visíveis, 44px clicáveis) */
+.alvo-toque::after { content: ""; position: absolute; inset: -4px; }
+
+/* Microinteração: badge da sacola "pula" ao adicionar item */
+@keyframes pulo { 0%, 100% { transform: scale(1); } 40% { transform: scale(1.45); } }
+.pulo { animation: pulo .4s ease-out; }
+
+/* Selo da marca: medalhão creme com aro dourado — dá contraste ao nome "Technerd B2R" sobre o verde */
+.selo-marca {
+  display: flex; align-items: center; justify-content: center;
+  padding: 12px; border-radius: 9999px;
+  background: radial-gradient(circle at 50% 35%, #FFFDF8, #F1E8D6);
+  box-shadow: 0 0 0 2px #C5A059, 0 0 0 6px rgba(197, 160, 89, .18), 0 12px 28px -8px rgba(0, 0, 0, .5);
+}
+
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Abas editoriais de categoria com fio dourado */
+.abas { display: flex; gap: 24px; border-bottom: 1px solid #E6DFCF; padding-bottom: 2px; overflow-x: auto; scrollbar-width: none; }
+.aba {
+  flex-shrink: 0; background: transparent; border: 0; border-bottom: 2.5px solid transparent;
+  margin-bottom: -2px; /* fio assenta sobre a linha base sem ser cortado pelo overflow */
+  padding: 14px 0 12px; min-height: 44px; font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+  white-space: nowrap; color: #5E6B5F; cursor: pointer; transition: color .25s, border-color .25s;
+}
+.aba:hover { color: #1B3B2B; }
+.aba.ativa { color: #1B3B2B; font-weight: 700; border-bottom-color: #C5A059; }
+
+/* Neve no hero: passa NA FRENTE do texto (z-index acima do conteúdo).
+   Queda via transform (GPU, sem reflow); --queda = altura do hero, setada no JS.
+   Balanço lateral numa animação separada no ::before para não brigar com a queda. */
+.neve {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 10;
+  --queda: 580px;
+}
+.neve .floco {
+  position: absolute;
+  top: -30px;
+  display: block;
+  color: #FFFDF8;
+  opacity: var(--op, 0.9);
+  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.8));
+  pointer-events: none;
+  will-change: transform;
+  animation: cair 12s linear infinite; /* duração e atraso vêm inline do JS */
+}
+.neve .floco svg { display: block; width: 100%; height: 100%; }
+@keyframes cair {
+  from { transform: translateY(0) translateX(0) rotate(0deg); }
+  to   { transform: translateY(calc(var(--queda) + 30px)) translateX(25px) rotate(360deg); }
+}
+
+/* Spotlight dourado que segue o cursor por todo o site (camada fixa sobre a página) */
+.luz-cursor {
+  position: fixed;
+  inset: 0;
+  z-index: 35; /* acima do conteúdo e da barra de filtros; abaixo da sacola e dos modais */
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .4s;
+  background: radial-gradient(circle 180px at var(--mx, 50%) var(--my, 50%), rgba(212, 175, 55, 0.18), transparent 70%);
+}
+.luz-cursor.ativa { opacity: 1; }
+@media (hover: none) { .luz-cursor { display: none; } }
+
+.toast { transition: opacity .25s, transform .25s; }
+
+/* Sacola */
+.gaveta { transition: transform .35s cubic-bezier(.2,.7,.2,1); }
+.gaveta.fechada { transform: translateX(105%); }
+
+@media (prefers-reduced-motion: reduce) {
+  *:not(.floco), *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ---------- Impressão / PDF ---------- */
+@page { size: A4; margin: 12mm; }
+@media print {
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  body { background: #F9F7F2 !important; }
+  .no-print, .neve { display: none !important; }
+  .card { box-shadow: none !important; transform: none !important; break-inside: avoid; page-break-inside: avoid; }
+  .grade { grid-template-columns: repeat(2, minmax(0,1fr)) !important; gap: 10mm !important; }
+  .hero { break-after: page; page-break-after: always; min-height: 250mm; display: flex; align-items: center; }
+  .rodape { break-before: page; page-break-before: always; }
+  .so-print { display: block !important; }
+  .secao-cat h3 { break-after: avoid; }
+  .secao-cat + .secao-cat { break-before: page; page-break-before: always; }
+  a { text-decoration: none; }
+}
+.so-print { display: none; }
